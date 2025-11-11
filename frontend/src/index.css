@@ -1,0 +1,138 @@
+/* Make all fixed UI portions non-selectable by default */
+body, html, .instagram-home, .instagram-card, .navbar, .card-header, .card-body, h1, h2, h3, h4, h5, h6, label, button, nav, footer {
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+.bottom-menu:hover{
+  opacity: 1 !important;
+}
+
+/* Allow selection for input, textarea, and .selectable class */
+input, textarea, .selectable, .form-control, .form-label, .card-text, .card-body input, .card-body textarea {
+  user-select: text;
+  -webkit-user-select: text;
+  -ms-user-select: text;
+}
+/* Hide horizontal scrollbar and style vertical scrollbar globally */
+html, body, * {
+  scrollbar-width: thin;
+  scrollbar-color: #b3c6e0 #e6f0fa;
+  overscroll-behavior-x: none;
+}
+
+/* Hide horizontal scrollbar for all elements (Webkit browsers) */
+*::-webkit-scrollbar {
+  width: 1px !important;
+  min-width: 1px !important;
+  max-width: 1px !important;
+  height: 0 !important;
+  background: transparent;
+  display: block;
+}
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #b3c6e0 0%, #e6f0fa 100%);
+  border-radius: 1px;
+  min-height: 20px;
+}
+*::-webkit-scrollbar-track {
+  background: #f0f8ff;
+}
+*::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+body, html {
+  overflow-x: hidden !important;
+  scrollbar-gutter: stable overlay;
+}
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body, html {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100vw;
+  min-width: 0;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+/* Hide horizontal scrollbar and style vertical scrollbar globally */
+/* html, body {
+  scrollbar-width: thin;
+  scrollbar-color: #f58529 #8134af;
+}
+
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  width: 2px;
+  height: 0;
+  background: transparent;
+} */
+/* html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #f58529 0%, #dd2a7b 50%, #8134af 100%);
+  border-radius: 1px;
+}
+html::-webkit-scrollbar-track, body::-webkit-scrollbar-track {
+  background: transparent;
+} */

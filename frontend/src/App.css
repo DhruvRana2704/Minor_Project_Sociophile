@@ -1,0 +1,54 @@
+/* Fixed bottom menu bar */
+.bottom-menu-bar {
+  position: fixed;
+  left: 50%;
+  bottom:10px;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background: rgba(255,255,255,0.95);
+  border-radius: 2em;
+  box-shadow: 0 2px 16px 0 rgba(31, 38, 135, 0.10);
+  padding: 0.2rem;
+  display: flex;
+  gap: 2em;
+  align-items: center;
+  opacity:0.8;
+} 
+/* Vibrant Instagram-like gradient background */
+.gradient-bg {
+  background: linear-gradient(135deg, #f58529 0%, #dd2a7b 50%, #8134af 100%);
+}
+
+.bottom-menu-bar:hover{
+  opacity: 1;
+}
+.font {
+  font-family: "Dancing Script", cursive;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+.instagram-home {
+  background-color: aliceblue;
+  min-height: 100vh;
+  width: 100vw;
+  max-width: 100vw;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+
+.instagram-card {
+  border: none;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+  backdrop-filter: blur(6px);
+}
+
+.btn-gradient-pink {
+  background: linear-gradient(90deg, #fd5d47 0%, #e1306c 100%);
+  border: none;
+  transition: background 0.3s;
+}
+.btn-gradient-pink:hover {
+  background: linear-gradient(90deg, #e1306c 0%, #fd5d47 100%);
+}

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Post added!</h2>
+    <ul>
+        <li>User ID: <%= post.userId %></li>
+        <li>Type: <%= post.type %></li>
+        <li>Content: <%= post.content %></li>
+        <li>Caption: <%= post.caption %></li>
+        <li>Hashtags: <%= post.hashtags.join(", ") %></li>
+        <li>Location: <%= post.location.coordinates.join(", ") %> (<%= post.location.type %>)</li>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>A list of posts</h2>
+<div style="display: flex; flex-wrap: wrap; gap:1vh;  justify-content:flex-start;">
+    <% posts    .forEach(function(post) { %>
+        <ul>
+        <li><strong>Post ID:</strong> <%= post._id %></li>
+        <li><strong>User ID:</strong> <%= post.userId %></li>
+        <li><strong>Type:</strong> <%= post.type %></li>
+        <li><strong>Content:</strong> <%= post.content %></li>
+        <li><strong>Likes:</strong> <%= post.likes %></li>
+        <li><strong>Caption:</strong> <%= post.caption %></li>
+        <li><strong>Hashtags</strong>: <%= post.hashtags.join(", ") %></li>
+       <li><strong>Location:</strong> <%= post.location.city %>, <%= post.location.state %></li>
+    </ul>
+            <br>
+            <% }); %>
+</div>
+
+</body>
+</html>

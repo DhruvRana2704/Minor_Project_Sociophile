@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>A list of users</h2>
+<div style="display: flex; flex-wrap: wrap; gap:1vh;  justify-content: flex-start;">
+    <% users.forEach(function(user) { %>
+        <ul style="width: 40vw;">
+        <div style="padding: 1rem;  background-color:antiquewhite;font-size: 2vh; align-items: flex-start; width:100%; flex-wrap: wrap;">
+            <li><strong>Username:</strong> <%= user.username %></li>
+            <li><strong>Full Name:</strong> <%= user.fullName %></li>
+            <li><strong>Email:</strong> <%= user.email %></li>
+            <li><strong>Age:</strong> <%= user.age %></li>
+            <li><strong>Bio:</strong> <%= user.bio %></li>
+            <li><strong>Interests:</strong> <%= user.interests && user.interests.join(', ') %></li>
+            <li><strong>Screen Time:</strong> <%= user.screenTime %></li>
+            <li><strong>Followers:</strong> <%= user.followersCount %></li>
+            <li><strong>Location:</strong> <%= user.location.city %>, <%= user.location.state %></li>
+
+        </div>
+            </ul>
+            <br>
+            <% }); %>
+</div>
+
+</body>
+</html>

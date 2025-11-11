@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>User added!</h2>
+    <ul>
+        <li><strong>Username:</strong> <%= user.username %></li>
+        <li><strong>Full Name:</strong> <%= user.fullName %></li>
+        <li><strong>Email:</strong> <%= user.email %></li>
+        <li><strong>Age:</strong> <%= user.age %></li>
+        <li><strong>Bio:</strong> <%= user.bio %></li>
+        <li><strong>Interests:</strong> <%= user.interests && user.interests.join(', ') %></li>
+        <li><strong>Screen Time:</strong> <%= user.screenTime %></li>
+        <li><strong>Location:</strong> 
+            <% if (user.location && user.location.coordinates) { %>
+                [<%= user.location.coordinates[0] %>, <%= user.location.coordinates[1] %>]
+            <% } %>
+        </li>
+    </ul>
+</body>
+</html>
