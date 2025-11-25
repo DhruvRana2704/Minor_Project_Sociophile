@@ -15,83 +15,49 @@ function Home() {
   const [startTime, setStartTime] = useState(null);
   const [watchTime, setWatchTime] = useState(0);
 
-const handlePlay = (postId) => {
-  watchStartTimes[postId] = Date.now(); // record start time
-};
+// const handlePlay = (postId) => {
+//   watchStartTimes[postId] = Date.now(); // record start time
+// };
 
-const handlePauseOrEnd = async (postId) => {
-  const startTime = watchStartTimes[postId];
-  if (!startTime) return; // ignore if play wasn’t recorded
+// const handlePauseOrEnd = async (postId) => {
+//   const startTime = watchStartTimes[postId];
+//   if (!startTime) return; // ignore if play wasn’t recorded
 
-  const watchedSeconds = (Date.now() - startTime) / 1000;
-  delete watchStartTimes[postId]; // reset for next time
+//   const watchedSeconds = (Date.now() - startTime) / 1000;
+//   delete watchStartTimes[postId]; // reset for next time
 
-  try {
-    await fetch("http://localhost:5000/interactions/watch", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({ postId, watchedSeconds }),
-    });
-    console.log(`Watch time (${watchedSeconds}s) sent for post ${postId}`);
-  } catch (err) {
-    console.error("Failed to send watch time:", err);
-  }
-};
+//   try {
+//     await fetch("http://localhost:5000/interactions/watch", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       credentials: "include",
+//       body: JSON.stringify({ postId, watchedSeconds }),
+//     });
+//     console.log(`Watch time (${watchedSeconds}s) sent for post ${postId}`);
+//   } catch (err) {
+//     console.error("Failed to send watch time:", err);
+//   }
+// };
 
-  const onWatchUpdate = async (postId, watchedSeconds) => {
-  try {
-    console.log("Updating watch time:", { postId, watchedSeconds });
-    await fetch("http://localhost:5000/interactions/watch", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ postId, watchedSeconds }),
-      credentials: 'include'
-    });
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch('http://localhost:5000/posts/fetchposts', {
-  //         credentials: 'include'
-  //       });
-
-  //       if (response.status === 401) {
-  //         navigate('/');
-  //         return;
-  //       }
-
-  //       if (!response.ok) {
-  //         throw new Error('Failed to fetch posts');
-  //       }
-
-  //       const jsonData = await response.json();
-  //       setData(jsonData);
-  //     } catch (error) {
-  //       console.error('Error fetching posts:', error);
-  //       if (error.message === 'Failed to fetch' || error.message.includes('unauthorized')) {
-  //         navigate('/');
-  //       }
-  //     } finally {
-  //       setLoading(false);
-  //     }
-
-  //   };
-
-  //   fetchData();
-  // }, [navigate]);
-
+//   const onWatchUpdate = async (postId, watchedSeconds) => {
+//   try {
+//     console.log("Updating watch time:", { postId, watchedSeconds });
+//     await fetch("http://localhost:5000/interactions/watch", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({ postId, watchedSeconds }),
+//       credentials: 'include'
+//     });
+//   } catch (err) {
+//     console.error(err);
+//   }
+// };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/interactions/fetchreels', {
-          credentials: 'include',
-          method: 'POST'
+        const response = await fetch('http://localhost:5000/posts/fetchposts', {
+          credentials: 'include'
         });
 
         if (response.status === 401) {
@@ -100,14 +66,13 @@ const handlePauseOrEnd = async (postId) => {
         }
 
         if (!response.ok) {
-          throw new Error('Failed to fetch reels');
+          throw new Error('Failed to fetch posts');
         }
 
         const jsonData = await response.json();
-
         setData(jsonData);
       } catch (error) {
-        console.error('Error fetching reels:', error);
+        console.error('Error fetching posts:', error);
         if (error.message === 'Failed to fetch' || error.message.includes('unauthorized')) {
           navigate('/');
         }
@@ -119,6 +84,41 @@ const handlePauseOrEnd = async (postId) => {
 
     fetchData();
   }, [navigate]);
+
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch('http://localhost:5000/interactions/fetchreels', {
+  //         credentials: 'include',
+  //         method: 'POST'
+  //       });
+
+  //       if (response.status === 401) {
+  //         navigate('/');
+  //         return;
+  //       }
+
+  //       if (!response.ok) {
+  //         throw new Error('Failed to fetch reels');
+  //       }
+
+  //       const jsonData = await response.json();
+
+  //       setData(jsonData);
+  //     } catch (error) {
+  //       console.error('Error fetching reels:', error);
+  //       if (error.message === 'Failed to fetch' || error.message.includes('unauthorized')) {
+  //         navigate('/');
+  //       }
+  //     } finally {
+  //       setLoading(false);
+  //     }
+
+  //   };
+
+  //   fetchData();
+  // }, [navigate]);
 
 
 
@@ -193,6 +193,7 @@ const handlePauseOrEnd = async (postId) => {
     }
   }
   return (
+    console.log(data),
     <div className="instagram-home min-vh-100 d-flex flex-column align-items-center justify-content-start"
     style={{ width: '100vw', maxWidth: '100vw', overflowX: 'hidden', margin: 0, padding: 0 }}>
       
@@ -204,7 +205,7 @@ const handlePauseOrEnd = async (postId) => {
       <div className="mt-3 container-fluid d-flex flex-column align-items-center justify-content-center p-0 m-0"
         style={{ minHeight: '80vh', width: '100vw', maxWidth: '100vw', overflowX: 'hidden', margin: 0, padding: 0, paddingBottom: '90px' }}>
         <div className="mt-3 d-flex flex-column gap-4 align-items-center w-100" style={{ maxWidth: 420 }}>
-          {data.recommended ? data.recommended.map(post => {
+          {data.posts? data.posts.map(post => {
             const postId = post._id || post.id;
             return (
               <div
