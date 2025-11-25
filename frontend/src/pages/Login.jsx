@@ -10,7 +10,7 @@ const API = import.meta.env.VITE_API_URL;
 
     const data = Object.fromEntries(formData);
     const response=await fetch(`${API}/users/login`, {
-      method: 'POST',
+      method: 'GET',
       credentials: 'include', // include cookies for session
       headers: {
         'Content-Type': 'application/json',
