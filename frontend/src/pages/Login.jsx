@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 function Login() {
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
@@ -49,7 +49,7 @@ const API = import.meta.env.VITE_API_URL;
         </form>
         <div className="mt-2">
           <span className="text-secondary">Don't have an account? </span>
-          <a href="/signup" className="fw-bold" style={{color: '#e1306c', textDecoration: 'underline'}}>Sign up</a>
+          <Link to="/signup" className="fw-bold" style={{color: '#e1306c', textDecoration: 'underline'}}>Sign up</Link>
         </div>
       </div>
       <footer className="mt-5 text-white-50">&copy; 2025 Urban Wave. Inspired by Instagram.</footer>
