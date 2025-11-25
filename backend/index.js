@@ -94,5 +94,5 @@ app.use('/interactions', require('./routes/interaction'));
 // ------------------------------------
 
 app.listen(port, "0.0.0.0", () => {
-  console.log(`🚀 Server running on http://0.0.0.0:${PORT}`);
+  console.log(`🚀 Server running on http://0.0.0.0:${port}`);
 });
