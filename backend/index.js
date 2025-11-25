@@ -10,7 +10,7 @@ const app = express();
 require('dotenv').config();
 const mongooseUrl = process.env.mongourl;
 const secret=process.env.secret;
-const port = process.env.PORT;
+const port = process.env.PORT || 5000;
 app.use('/uploads', express.static(path.join(__dirname, 'public/images/uploads')));
 
 
