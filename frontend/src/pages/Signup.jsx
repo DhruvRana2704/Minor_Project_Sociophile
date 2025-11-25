@@ -6,7 +6,8 @@ function Signup() {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
-    const response =await fetch(`${process.env.BASE_URL}/users/register`, {
+    const API = import.meta.env.VITE_API_URL;
+    const response =await fetch(`${API}/users/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -8,6 +8,7 @@ function CreatePost() {
   const [type, setType] = useState('post');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const API = import.meta.env.VITE_API_URL;
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -20,7 +21,7 @@ const handleSubmit = async (e) => {
 
   setLoading(true);
   try {
-    const res = await fetch(`${process.env.BASE_URL}/posts/create_post`, {
+    const res = await fetch(`${API}/posts/create_post`, {
       method: 'POST',
       body: formData,
       credentials:"include"

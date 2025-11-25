@@ -1,12 +1,15 @@
 import React from 'react';
+
 import { useNavigate } from 'react-router-dom';
 function Login() {
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
+const API = import.meta.env.VITE_API_URL;
+
     const data = Object.fromEntries(formData);
-    const response=await fetch(`${process.env.BASE_URL}/users/login`, {
+    const response=await fetch(`${API}/users/login`, {
       method: 'POST',
       credentials: 'include', // include cookies for session
       headers: {
