@@ -7,7 +7,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const User = require('./schema/userSchema');
 const path = require('path');
 require('dotenv').config();
-const MongoStore = require('connect-mongo');     // ✅ use Mongo session store
+
 
 const app = express();
 
@@ -32,11 +32,12 @@ mongoose.connect(mongooseUrl)
 // ------------------------------------
 app.use(cors({
   origin: [
-    'http://localhost:5173',                 // local dev
-    process.env.FRONTEND_URL                // your deployed frontend
+    "http://localhost:5173",
+    "https://minor-project-sociophile-1.onrender.com"
   ],
   credentials: true
 }));
+
 
 
 // ------------------------------------
@@ -50,19 +51,27 @@ app.set('view engine', 'ejs');
 // ------------------------------------
 // ✅ 3. Sessions (MongoStore, REQUIRED for Render)
 // ------------------------------------
+const MongoStore = require("connect-mongo");
+
 app.use(session({
   secret: secret,
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({
-    mongoUrl: mongooseUrl,
-    ttl: 14 * 24 * 60 * 60  // 14 days
+    mongoUrl: process.env.mongourl,
+    collectionName: "sessions"
   }),
   cookie: {
-    secure: false,          // Render free is not HTTPS on backend
-    httpOnly: true
-  }
+  secure: true,          // REQUIRED on Render (HTTPS)
+  httpOnly: true,
+  sameSite: "none",      // REQUIRED for cross-site cookies
+  maxAge: 1000 * 60 * 60 * 24
+}
+
 }));
+
+
+app.set("trust proxy", 1);
 
 
 // ------------------------------------

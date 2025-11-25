@@ -17,6 +17,7 @@ const API = import.meta.env.VITE_API_URL;
       },
       body: JSON.stringify(data)
     });
+    console.log(response)
     const responseData = await response.json();
     if(responseData.success===true){
       navigate(responseData.redirectUrl)

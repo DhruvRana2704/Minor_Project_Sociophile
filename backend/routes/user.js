@@ -98,13 +98,14 @@ router.post('/register', async (req, res) => {
  * POST /users/login
  */
 router.post('/login', (req, res, next) => {
+
   passport.authenticate('local', (err, user, info) => {
     if (err) return next(err);
     if (!user) return res.status(401).json({ success: false, message: 'Invalid credentials' });
-
     req.logIn(user, err => {
       if (err) return next(err);
       res.json({ success: true, message: 'Login successful', redirectUrl: '/home', user });
+      console.log('login')
     });
   })(req, res, next);
 });
