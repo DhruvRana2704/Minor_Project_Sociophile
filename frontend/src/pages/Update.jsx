@@ -15,7 +15,7 @@ const Update = () => {
     // Fetch current user data
     const fetchUserData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/users/profile', {
+        const response = await fetch(`${process.env.BASE_URL}/users/profile`, {
           credentials: 'include'
         });
         if (response.ok) {
@@ -52,7 +52,7 @@ const Update = () => {
       if (formData.avatar) {
         formDataToSend.append('avatar', formData.avatar);
       }
-      const response = await fetch('http://localhost:5000/users/update', {
+      const response = await fetch(`${process.env.BASE_URL}/users/update`, {
         method: 'POST',
         credentials: 'include',
         body: formDataToSend
@@ -83,7 +83,7 @@ const Update = () => {
           <div className="text-center mb-4">
             <div className="position-relative d-inline-block">
               <img
-                src={`http://localhost:5000${formData.avatar?formData.avatar:preview}`}
+                src={formData.avatar instanceof File ? preview : `${process.env.BASE_URL}${formData.avatar}`}
                 alt="Profile Preview"
                 name='avatar'
                 className="rounded-circle"

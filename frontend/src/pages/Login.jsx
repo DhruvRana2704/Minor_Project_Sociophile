@@ -6,7 +6,7 @@ function Login() {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
-    const response=await fetch('http://localhost:5000/users/login', {
+    const response=await fetch(`${process.env.BASE_URL}/users/login`, {
       method: 'POST',
       credentials: 'include', // include cookies for session
       headers: {

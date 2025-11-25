@@ -8,7 +8,7 @@ const UserProfile = () => {
       const [user,setUser]=useState(null);
       useEffect(() => {
         async function fetchuser() {
-          const response = await fetch(`http://localhost:5000/users/profile/${username}`);
+          const response = await fetch(`${process.env.BASE_URL}/users/profile/${username}`);
           const data = await response.json();
           if (data.success) {
             setUser(data.user);
@@ -34,7 +34,7 @@ const UserProfile = () => {
         {/* Profile Info Card */}
         <div className="card p-4 mb-4 text-center instagram-card" style={{maxWidth:400, width:'100%'}}>
           <h2 className="font fw-bold mb-1">{user.fullName}</h2>
-          <img src={`http://localhost:5000${user.avatar}`} style={{objectFit:'cover'}} alt={user.fullName} className="rounded-circle mb-3 mx-auto" width="100" height="100" />
+          <img src={`${process.env.BASE_URL}${user.avatar}`} style={{objectFit:'cover'}} alt={user.fullName} className="rounded-circle mb-3 mx-auto" width="100" height="100" />
           <div className="text-secondary mb-2">@{username}</div>
            <p className="mb-2" style={{whiteSpace:'break-spaces'}}>{user.bio ? user.bio : "Bio for " + user.username.toUpperCase()}</p>
         </div>

@@ -20,7 +20,7 @@ const handleSubmit = async (e) => {
 
   setLoading(true);
   try {
-    const res = await fetch('http://localhost:5000/posts/create_post', {
+    const res = await fetch(`${process.env.BASE_URL}/posts/create_post`, {
       method: 'POST',
       body: formData,
       credentials:"include"

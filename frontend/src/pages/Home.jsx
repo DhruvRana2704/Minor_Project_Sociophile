@@ -56,7 +56,7 @@ function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/posts/fetchposts', {
+        const response = await fetch(`${process.env.BASE_URL}/posts/fetchposts`, {
           credentials: 'include'
         });
 
@@ -176,7 +176,7 @@ function Home() {
     });
   };
   async function handleLike(postid) {
-    const response = await fetch('http://localhost:5000/likes/like', {
+    const response = await fetch(`${process.env.BASE_URL}/likes/like`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -236,7 +236,7 @@ function Home() {
                         </Link>
                       </div>
                       <img
-                        src={`http://localhost:5000${post.url}`}
+                        src={`${process.env.BASE_URL}${post.url}`}
                         className="card-img-top"
                         alt={post.caption}
                         style={{ maxHeight: 450, objectFit: 'cover' }}
@@ -302,7 +302,7 @@ function Home() {
     `;
                         }}
                       >
-                        <source src={`http://localhost:5000${post.url}`} type="video/mp4" />
+                        <source src={`${process.env.BASE_URL}${post.url}`} type="video/mp4" />
                         Your browser does not support the video tag.
                       </video>
                       <div className="d-flex justify-content-end mt-2">

@@ -8,7 +8,7 @@ function Logout() {
   const handleLogout = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/users/logout', {
+      const response = await fetch(`${process.env.BASE_URL}/users/logout`, {
         method: 'POST',
         credentials: 'include',
       });
