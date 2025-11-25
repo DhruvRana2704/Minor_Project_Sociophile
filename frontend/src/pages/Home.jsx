@@ -236,7 +236,7 @@ function Home() {
                         </Link>
                       </div>
                       <img
-                        src={`${API}/${post.url}`}
+                        src={`${API}${post.url}`}
                         className="card-img-top"
                         alt={post.caption}
                         style={{ maxHeight: 450, objectFit: 'cover' }}
