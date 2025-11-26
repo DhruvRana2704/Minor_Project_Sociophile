@@ -49,6 +49,7 @@ expressRouter.post("/remove_follower",isLoggedIn, async (req, res) => {
 
 expressRouter.get('/getfollowers', isLoggedIn, async (req, res) => {
     try {
+      const username=req.user.username;
         const [followers, following] = await Promise.all([
   followerSchema
     .find({ followingId: req.user._id })
@@ -65,7 +66,8 @@ res.json({
   followers,
   following,
   followersCount: followers.length,
-  followingCount: following.length
+  followingCount: following.length,
+  username
 });
 
     } catch (error) {

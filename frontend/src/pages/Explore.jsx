@@ -2,12 +2,12 @@ import React, { useState,useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import BottomMenu from '../components/BottomMenu';
 import useFetchWithLoader from '../hooks/useFetchWithLoader';
-// ...existing imports...
 const API = import.meta.env.VITE_API_URL;
-
+// ...existing imports...
 function Explore() {
   const fetchWithLoader = useFetchWithLoader({ delayMs: 200 });
   const [following, setFollowing] = useState([]);
+  const [username,setUsername]=useState(null);
   const [search, setSearch] = useState('');
   const [data, setData] = useState([]);
 
@@ -61,6 +61,7 @@ function Explore() {
         credentials: 'include'
       });
       const followingData = await followingRes.json();
+      setUsername(followingData.username);
       // console.log(followingData.following);
       if (followingData.following) {
       setFollowing(followingData.following.map((u) => {
@@ -72,9 +73,11 @@ function Explore() {
     fetchData();
   }, []);
 
+
   const filteredUsers = data.filter(
     (user) =>
       user.username.toLowerCase().includes(search.toLowerCase())
+    
   );
 
   return (
@@ -92,18 +95,18 @@ function Explore() {
             style={{ fontSize: '1.1em' }}
           />
         </div>
-        <div className="list-group">
+        <div className="list-group" style={{paddingBottom:'1rem'}}>
           {filteredUsers.map((user) => (
             <div key={user.username} className="list-group-item d-flex align-items-center justify-content-between instagram-card mb-3 p-3">
               <div className="d-flex align-items-center gap-3">
                 <img src={user.avatar ? `${user.avatar}` : 'https://randomuser.me/api/portraits/men/32.jpg'} style={{ objectFit: 'cover' }} alt={user.name} className="rounded-circle" width="48" height="48" />
                 <div>
-                  <Link to={`/UserProfile/${user.username}`} className="fw-bold text-decoration-none selectable" style={{ color: '#e1306c', fontSize: '1.1em' }}>{user.name}</Link>
+                  <Link to={`/UserProfile/${user.username}`}  className="fw-bold text-decoration-none selectable" style={{ cursor:"pointer", color: 'black', fontSize: '1em' }}>{user.fullName}</Link>
                   <div className="text-secondary small selectable">@{user.username}</div>
                   <div className="small selectable">{user.bio}</div>
                 </div>
               </div>
-              {following.includes(user.username) ? (
+              {username!==user.username && (following.includes(user.username) ? (
                 <button
                   className="btn btn-sm rounded-pill fw-bold btn-secondary"
                   onClick={() => handleUnfollow(user.username)}
@@ -117,7 +120,7 @@ function Explore() {
                 >
                   Follow
                 </button>
-              )}
+              ))}
             </div>
           ))}
         </div>

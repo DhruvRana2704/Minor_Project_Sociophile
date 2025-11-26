@@ -19,14 +19,41 @@ const UserProfile = () => {
       }, []);
 
 
-  if (!user) {
+  const [showNotFound, setShowNotFound] = useState(false);
+
+  useEffect(() => {
+    if (!user) {
+      const timer = setTimeout(() => {
+        setShowNotFound(true);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [user]);
+
+  if (showNotFound) {
     return (
       <div className="min-vh-100 d-flex flex-column align-items-center justify-content-center">
         <h3>User not found</h3>
-        <Link to="/home" className="btn btn-primary mt-3">Back to Home</Link>
+        <Link to="/home" className="btn btn-primary mt-3">
+          Back to Home
+        </Link>
       </div>
     );
   }
+
+  // show loading spinner before 5 sec
+  if (!user) {
+    return (
+      <div className="min-vh-100 d-flex align-items-center justify-content-center">
+        <h4>Loading user...</h4>
+      </div>
+    );
+  }
+
+  
+
+
 
     return (
     <div className="instagram-home min-vh-100 d-flex flex-column align-items-center justify-content-center" 

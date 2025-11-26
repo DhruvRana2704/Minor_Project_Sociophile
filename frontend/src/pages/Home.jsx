@@ -236,6 +236,7 @@ function Home() {
                         >
                           {post.user[0].username}
                         </Link>
+                        {post.user[0].username==='dhruv' && <div style={{ fontSize:'0.75rem', marginLeft: 'auto', marginRight: '1rem',  fontWeight: '700', backgroundColor:'maroon', padding:'0.2rem', borderRadius:'10px', color:'white' }}>Admin</div>}
                       </div>
                       <img
                         src={`${post.url}`}
