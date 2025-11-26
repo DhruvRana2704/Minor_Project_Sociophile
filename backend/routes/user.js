@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const User = require('../schema/userSchema'); // your Mongoose model
-const upload = require('./multer')
+
+const { uploadAvatar } = require('./multer');
+
 // ✅ Middleware to check login
 function isLoggedIn(req, res, next) {
   try {
@@ -71,17 +73,25 @@ router.get('/profile/:username', async (req, res) => {
 /**
  * POST /users/register
  */
-router.post('/register', async (req, res) => {
+
+
+router.post('/register', uploadAvatar.single('avatar'), async (req, res) => {
   const { fullName, username, email, password } = req.body;
 
   const userData = { fullName, username, email };
 
+  // If user uploaded avatar, add its Cloudinary URL
+  if (req.file) {
+    userData.avatar = req.file.path; // Cloudinary URL
+  }
+
   try {
     const registeredUser = await User.register(userData, password);
+
     // Automatically log the user in after registration
     req.login(registeredUser, err => {
       if (err) throw err;
-      res.json({ success: true, redirectUrl: '/home', user: registeredUser });
+      res.json({ success: true, redirectUrl: '/', user: registeredUser });
     });
   } catch (error) {
     if (error.name === 'UserExistsError') {
@@ -94,6 +104,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
+
 /**
  * POST /users/login
  */
@@ -104,7 +115,7 @@ router.post('/login', (req, res, next) => {
     if (!user) return res.status(401).json({ success: false, message: 'Invalid credentials' });
     req.logIn(user, err => {
       if (err) return next(err);
-      res.json({ success: true, message: 'Login successful', redirectUrl: '/home', user });
+      res.json({ success: true, message: 'Login successful', redirectUrl: '/', user });
 
     });
   })(req, res, next);
@@ -116,38 +127,20 @@ router.post('/login', (req, res, next) => {
 router.post('/logout', isLoggedIn, (req, res, next) => {
   req.logout(err => {
     if (err) return next(err);
-    res.json({ success: true, message: 'Logged out0' });
+    res.json({ success: true, message: 'Logged out' });
   });
 });
-router.post('/update', isLoggedIn, upload.single('avatar'), async (req, res) => {
-  try {
-    console.log('Received update request with body:', req.body);
-    console.log('Current passport session:', req.session?.passport);
 
-    // Build updates
+router.post('/update', isLoggedIn, uploadAvatar.single('avatar'), async (req, res) => {
+  try {
     const updates = {};
     if (req.body.username) updates.username = req.body.username;
     if (req.body.bio) updates.bio = req.body.bio;
-    if (req.file) updates.avatar = `/uploads/${req.file.filename}`;
 
-    // Determine current user id
-    let userId = req.user?._id;
-    if (!userId && req.session?.passport?.user) {
-      // session stores the username or id depending on your serializeUser
-      const currentUser = await User.findOne({ username: req.session.passport.user });
-      userId = currentUser?._id;
-    }
+    // Use Cloudinary URL
+    if (req.file) updates.avatar = req.file.path;
 
-    if (!userId) {
-      return res.status(401).json({ success: false, message: 'Not authenticated' });
-    }
-
-    // Update user
-    const updatedUser = await User.findByIdAndUpdate(userId, updates, { new: true });
-
-    if (!updatedUser) {
-      return res.status(404).json({ success: false, message: 'User not found' });
-    }
+    const updatedUser = await User.findByIdAndUpdate(req.user._id, updates, { new: true });
 
     res.json({ success: true, user: updatedUser });
   } catch (err) {
@@ -155,6 +148,7 @@ router.post('/update', isLoggedIn, upload.single('avatar'), async (req, res) => 
     res.status(500).json({ success: false, message: 'Error updating profile' });
   }
 });
+
 
 
 router.get('/fetchusers',isLoggedIn,async(req,res)=>{

@@ -32,7 +32,7 @@ function Profile() {
         } else {
           setError(data.message || 'Failed to fetch profile');
           if (response.status === 401) {
-            navigate('/');
+            navigate('/login');
           }
         }
       } catch (err) {
@@ -90,7 +90,7 @@ function Profile() {
         <div className="card p-4 mb-4 text-center instagram-card" style={{ maxWidth: 400, width: '100%', alignItems: "center" }}>
           <h2 className="font fw-bold mb-1">{user.fullName}</h2>
           {console.log(user)}
-          <img src={`${user.avatar?`${API}${user.avatar}` : 'https://randomuser.me/api/portraits/men/32.jpg'}`} style={{ objectFit: 'cover', height: '200px', width: '200px' }} alt="avatar" className="rounded-circle mb-3" width="100" height="100" />
+          <img src={`${user.avatar?`${user.avatar}` : 'https://randomuser.me/api/portraits/men/32.jpg'}`} style={{ objectFit: 'cover', height: '200px', width: '200px' }} alt="avatar" className="rounded-circle mb-3" width="100" height="100" />
           <div className="text-secondary mb-2">@{user.username}</div>
           <p className="mb-2" style={{ whiteSpace: 'pre-line' }}>{user.bio}</p>
           <div style={{ display: 'flex', gap: "20px", marginTop: '10px' }}>
@@ -154,7 +154,7 @@ function Profile() {
                   <ul className="list-unstyled mb-0">
                     {(showList === 'followers' ? followers : following).map((item, idx) => (
                       <li style={{display:'flex',alignItems:'center'}} key={idx} className="py-2 border-bottom">
-                        <img src={showList === 'followers' ? `${API}${item.followerId.avatar}` : `${API}${item.followingId.avatar}`} width='40px' height='40px' alt="" style={{objectFit:'cover', borderRadius: '50%', marginRight:'10px'}}/>
+                        <img src={showList === 'followers' ? `${item.followerId.avatar}` : `${item.followingId.avatar}`} width='40px' height='40px' alt="" style={{objectFit:'cover', borderRadius: '50%', marginRight:'10px'}}/>
                         <Link to={`/UserProfile/${showList === 'followers' ? item.followerId.username : item.followingId.username }`}>
                         {showList === 'followers' ? item.followerId.username : item.followingId.username}
                         </Link>

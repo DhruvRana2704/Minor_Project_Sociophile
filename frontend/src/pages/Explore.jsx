@@ -96,7 +96,7 @@ function Explore() {
           {filteredUsers.map((user) => (
             <div key={user.username} className="list-group-item d-flex align-items-center justify-content-between instagram-card mb-3 p-3">
               <div className="d-flex align-items-center gap-3">
-                <img src={user.avatar ? `${API}${user.avatar}` : 'https://randomuser.me/api/portraits/men/32.jpg'} style={{ objectFit: 'cover' }} alt={user.name} className="rounded-circle" width="48" height="48" />
+                <img src={user.avatar ? `${user.avatar}` : 'https://randomuser.me/api/portraits/men/32.jpg'} style={{ objectFit: 'cover' }} alt={user.name} className="rounded-circle" width="48" height="48" />
                 <div>
                   <Link to={`/UserProfile/${user.username}`} className="fw-bold text-decoration-none selectable" style={{ color: '#e1306c', fontSize: '1.1em' }}>{user.name}</Link>
                   <div className="text-secondary small selectable">@{user.username}</div>

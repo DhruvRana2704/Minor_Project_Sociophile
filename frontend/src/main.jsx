@@ -23,9 +23,9 @@ createRoot(document.getElementById('root')).render(
       <BrowserRouter>
         <LoadingOverlay />
         <Routes>
-          <Route path="/" element={<RouteWrapper Component={Login} />} />
+          <Route path="/" element={<RouteWrapper Component={Home} />} />
           <Route path="/signup" element={<RouteWrapper Component={Signup} />} />
-          <Route path="/home" element={<RouteWrapper Component={Home} />} />
+          <Route path="/login" element={<RouteWrapper Component={Login} />} />
           <Route path="/profile" element={<RouteWrapper Component={Profile} />} />
           <Route path="/UserProfile/:username" element={<RouteWrapper Component={UserProfile} />} />
           <Route path="/explore" element={<RouteWrapper Component={Explore} />} />

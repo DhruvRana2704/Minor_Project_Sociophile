@@ -63,7 +63,7 @@ function Home() {
         });
 
         if (response.status === 401) {
-          navigate('/');
+          navigate('/login');
           return;
         }
 
@@ -76,7 +76,7 @@ function Home() {
       } catch (error) {
         console.error('Error fetching posts:', error);
         if (error.message === 'Failed to fetch' || error.message.includes('unauthorized')) {
-          navigate('/');
+          navigate('/login');
         }
       } finally {
         setLoading(false);
@@ -222,7 +222,7 @@ function Home() {
                       <div className="card-header d-flex align-items-center bg-white border-0" style={{ height: '50px' }}>
 
                         <img
-                          src={post.user[0].avatar ? `${API}${post.user[0].avatar}` : 'https://randomuser.me/api/portraits/men/32.jpg'}
+                          src={post.user[0].avatar ? `${post.user[0].avatar}` : 'https://randomuser.me/api/portraits/men/32.jpg'}
                           alt="avatar"
                           className="rounded-circle me-2"
                           width="40"
@@ -238,7 +238,7 @@ function Home() {
                         </Link>
                       </div>
                       <img
-                        src={`${API}${post.url}`}
+                        src={`${post.url}`}
                         className="card-img-top"
                         alt={post.caption}
                         style={{ maxHeight: 450, objectFit: 'cover' }}
@@ -265,7 +265,7 @@ function Home() {
                       <div className="card-header d-flex align-items-center bg-white border-0">
 
                         <img
-                          src={post.user[0].avatar ? `${API}${post.user[0].avatar}` : 'https://randomuser.me/api/portraits/men/32.jpg'} 
+                          src={post.user[0].avatar ? `${post.user[0].avatar}` : 'https://randomuser.me/api/portraits/men/32.jpg'} 
                           alt="avatar"
                           style={{ objectFit: 'cover' }}
                           className="rounded-circle me-2"
@@ -303,7 +303,7 @@ function Home() {
     `;
                         }}
                       >
-                        <source src={`${API}${post.url}`} type="video/mp4" />
+                        <source src={`${post.url}`} type="video/mp4" />
                         Your browser does not support the video tag.
                       </video>
                       <div className="d-flex justify-content-end mt-2">

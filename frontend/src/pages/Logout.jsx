@@ -51,7 +51,7 @@ function Logout() {
           </button>
           
           <Link 
-            to="/home" 
+            to="/login" 
             className="btn btn-outline-secondary rounded-pill px-4"
           >
             Cancel

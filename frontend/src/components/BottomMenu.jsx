@@ -7,7 +7,7 @@ const BottomMenu = () => {
     <div className='bottom-menu'>
         {/* Bottom Menu Bar */}
       <div className="bottom-menu-bar">
-        <Link to="/home" className="btn btn-link text-decoration-none text-dark d-flex flex-column align-items-center " title="Home">
+        <Link to="/" className="btn btn-link text-decoration-none text-dark d-flex flex-column align-items-center " title="Home">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path d="M3 12L12 4l9 8" stroke="#e1306c" strokeWidth="2" /><path d="M5 10v10h14V10" stroke="#e1306c" strokeWidth="2" /></svg>
           <span style={{ fontSize: '0.8em' }}>Home</span>
         </Link>

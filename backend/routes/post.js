@@ -1,7 +1,8 @@
 const express = require('express');
 const expressRouter = express.Router();
 const postSchema = require('../schema/postSchema');
-const upload = require('./multer')
+const { uploadImage } = require('./multer');
+
 
 const userSchema = require('../schema/userSchema');
 const isLoggedIn = (req, res, next) => {
@@ -14,26 +15,25 @@ const isLoggedIn = (req, res, next) => {
     });
 };
 
-expressRouter.post('/create_post', upload.single('image'), async (req, res) => {
-    try {
+expressRouter.post('/create_post', uploadImage.single('image'), async (req, res) => {
+  try {
+    const user = await userSchema.findOne({ username: req.session.passport.user });
 
-        const user = await userSchema.findOne({ username: req.session.passport.user }).populate('_id')
+    const post = await postSchema.create({
+      userId: user._id,
+      type: req.body.type,
+      url: req.file ? req.file.path : null, // Cloudinary URL
+      caption: req.body.caption,
+      hashtags: req.body.hashtags
+        ? req.body.hashtags.split(',').map(tag => tag.trim())
+        : []
+    });
 
-
-        const post = await postSchema.create({
-            userId: user._id,
-            type: req.body.type,
-            url: `/uploads/${req.file.filename}`,
-            caption: req.body.caption,
-            hashtags: req.body.hashtags
-                ? req.body.hashtags.split(',').map(tag => tag.trim())
-                : []
-        });
-        res.json({ post });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
-
-    }
+    console.log('Post created:', post); 
+    res.json({ post });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
 });
 
 // backend/posts.js

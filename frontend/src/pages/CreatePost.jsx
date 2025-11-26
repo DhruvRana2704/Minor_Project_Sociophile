@@ -32,7 +32,7 @@ const handleSubmit = async (e) => {
     console.error(err);
   } finally {
     setLoading(false);
-    navigate('/home');
+    navigate('/');
   }
 };
 
