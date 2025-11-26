@@ -1,12 +1,23 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useRef } from 'react';
 
 const LoadingContext = createContext();
 
+// Provider maintains an internal counter so multiple concurrent requests
+// show a single global loader until all requests complete.
 export function LoadingProvider({ children }) {
-  const [loading, setLoading] = useState(false);
+  const [count, setCount] = useState(0);
+  const mounted = useRef(true);
 
-  const startLoading = useCallback(() => setLoading(true), []);
-  const stopLoading = useCallback(() => setLoading(false), []);
+  const startLoading = useCallback(() => {
+    setCount(c => c + 1);
+  }, []);
+
+  const stopLoading = useCallback(() => {
+    setCount(c => Math.max(0, c - 1));
+  }, []);
+
+  // derived boolean
+  const loading = count > 0;
 
   return (
     <LoadingContext.Provider value={{ loading, startLoading, stopLoading }}>

@@ -1,16 +1,18 @@
 import React, { useState,useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import BottomMenu from '../components/BottomMenu';
+import useFetchWithLoader from '../hooks/useFetchWithLoader';
 // ...existing imports...
 const API = import.meta.env.VITE_API_URL;
 
 function Explore() {
+  const fetchWithLoader = useFetchWithLoader({ delayMs: 200 });
   const [following, setFollowing] = useState([]);
   const [search, setSearch] = useState('');
   const [data, setData] = useState([]);
 
   const handleFollow = async (username) => {
-    const response = await fetch(`${API}/followers/create_follower`, {
+    const response = await fetchWithLoader(`${API}/followers/create_follower`, {
       method: 'POST',
       body: JSON.stringify({ username }),
       credentials: 'include',
@@ -27,7 +29,7 @@ function Explore() {
   };
 
   const handleUnfollow = async (username) => {
-    const response = await fetch(`${API}/followers/remove_follower`, {
+    const response = await fetchWithLoader(`${API}/followers/remove_follower`, {
       method: 'POST',
       body: JSON.stringify({ username }),
       credentials: 'include',
@@ -46,7 +48,7 @@ function Explore() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch(`${API}/users/fetchusers`, {
+      const response = await fetchWithLoader(`${API}/users/fetchusers`, {
         method: 'GET',
         credentials: 'include'
       });
@@ -54,7 +56,7 @@ function Explore() {
       setData(data.users);
 
       // Fetch following list for the logged-in user
-      const followingRes = await fetch(`${API}/followers/getfollowers`, {
+      const followingRes = await fetchWithLoader(`${API}/followers/getfollowers`, {
         method: 'GET',
         credentials: 'include'
       });

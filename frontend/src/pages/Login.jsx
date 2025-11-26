@@ -1,32 +1,38 @@
 import React from 'react';
 
 import { Link, useNavigate } from 'react-router-dom';
+import useFetchWithLoader from '../hooks/useFetchWithLoader';
+
 function Login() {
   const navigate = useNavigate();
+  const fetchWithLoader = useFetchWithLoader({ delayMs: 200 });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-const API = import.meta.env.VITE_API_URL;
-
+    const API = import.meta.env.VITE_API_URL;
 
     const data = Object.fromEntries(formData);
-    const response=await fetch(`${API}/users/login`, {
-      method: 'POST',
-      credentials: 'include', // include cookies for session
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data)
-    });
-    console.log(response)
-    const responseData = await response.json();
-    if(responseData.success===true){
-      navigate(responseData.redirectUrl)
+    try {
+      const response = await fetchWithLoader(`${API}/users/login`, {
+        method: 'POST',
+        credentials: 'include', // include cookies for session
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      });
+
+      const responseData = await response.json();
+      if (responseData.success === true) {
+        navigate(responseData.redirectUrl);
+      } else {
+        alert(responseData.error || "Invalid credentials");
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      alert('Network or server error');
     }
-    else{
-      alert(responseData.error || "Invalid credentials");
-    }
-    // navigate('/home');
   };
   return (
     

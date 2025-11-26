@@ -1,9 +1,11 @@
 import { React, useEffect, useState, useRef, use } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import BottomMenu from '../components/BottomMenu';
+import useFetchWithLoader from '../hooks/useFetchWithLoader';
 
 function Home() {
   const navigate = useNavigate();
+  const fetchWithLoader = useFetchWithLoader({ delayMs: 200 });
   const watchStartTimes = {}; // { postId: timestamp }
   const API = import.meta.env.VITE_API_URL;
   const [data, setData] = useState({ posts: [], reels: [] });
@@ -56,7 +58,7 @@ function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${API}/posts/fetchposts`, {
+        const response = await fetchWithLoader(`${API}/posts/fetchposts`, {
           credentials: 'include'
         });
 
@@ -79,7 +81,6 @@ function Home() {
       } finally {
         setLoading(false);
       }
-
     };
 
     fetchData();
@@ -176,7 +177,7 @@ function Home() {
     });
   };
   async function handleLike(postid) {
-    const response = await fetch(`${API}/likes/like`, {
+    const response = await fetchWithLoader(`${API}/likes/like`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
