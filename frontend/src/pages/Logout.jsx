@@ -4,7 +4,8 @@ import { useNavigate, Link } from 'react-router-dom';
 function Logout() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
+  
+  const API = import.meta.env.VITE_API_URL;
   const handleLogout = async () => {
     setLoading(true);
     try {
@@ -61,6 +62,6 @@ function Logout() {
 
     </div>
   );
-}
 
+}
 export default Logout;

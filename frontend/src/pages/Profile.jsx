@@ -89,7 +89,8 @@ function Profile() {
         style={{ minHeight: '80vh', width: '100vw', maxWidth: '100vw', overflowX: 'hidden' }}>
         <div className="card p-4 mb-4 text-center instagram-card" style={{ maxWidth: 400, width: '100%', alignItems: "center" }}>
           <h2 className="font fw-bold mb-1">{user.fullName}</h2>
-          <img src={`${API}${user.avatar}`} style={{ objectFit: 'cover', height: '200px', width: '200px' }} alt="avatar" className="rounded-circle mb-3" width="100" height="100" />
+          {console.log(user)}
+          <img src={`${user.avatar?`${API}${user.avatar}` : 'https://randomuser.me/api/portraits/men/32.jpg'}`} style={{ objectFit: 'cover', height: '200px', width: '200px' }} alt="avatar" className="rounded-circle mb-3" width="100" height="100" />
           <div className="text-secondary mb-2">@{user.username}</div>
           <p className="mb-2" style={{ whiteSpace: 'pre-line' }}>{user.bio}</p>
           <div style={{ display: 'flex', gap: "20px", marginTop: '10px' }}>

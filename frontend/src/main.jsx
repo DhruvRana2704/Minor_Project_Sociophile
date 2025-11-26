@@ -14,20 +14,26 @@ import UserProfile from './pages/UserProfile.jsx';
 import CreatePost from './pages/CreatePost.jsx';
 import Logout from './pages/Logout.jsx';
 import Update from './pages/Update.jsx';
+import { LoadingProvider } from './contexts/LoadingContext';
+import LoadingOverlay from './components/LoadingOverlay';
+import RouteWrapper from './components/RouteWrapper';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/UserProfile/:username" element={<UserProfile />} />
-        <Route path="/explore" element={<Explore />} />
-        <Route path="/create" element={<CreatePost />} />
-        <Route path="/logout" element={<Logout />} />
-        <Route path="/update" element={<Update />} />
-      </Routes>
-    </BrowserRouter>
+    <LoadingProvider>
+      <BrowserRouter>
+        <LoadingOverlay />
+        <Routes>
+          <Route path="/" element={<RouteWrapper Component={Login} />} />
+          <Route path="/signup" element={<RouteWrapper Component={Signup} />} />
+          <Route path="/home" element={<RouteWrapper Component={Home} />} />
+          <Route path="/profile" element={<RouteWrapper Component={Profile} />} />
+          <Route path="/UserProfile/:username" element={<RouteWrapper Component={UserProfile} />} />
+          <Route path="/explore" element={<RouteWrapper Component={Explore} />} />
+          <Route path="/create" element={<RouteWrapper Component={CreatePost} />} />
+          <Route path="/logout" element={<RouteWrapper Component={Logout} />} />
+          <Route path="/update" element={<RouteWrapper Component={Update} />} />
+        </Routes>
+      </BrowserRouter>
+    </LoadingProvider>
   </StrictMode>
 );

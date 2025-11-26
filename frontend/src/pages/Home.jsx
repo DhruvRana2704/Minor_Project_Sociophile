@@ -193,7 +193,7 @@ function Home() {
     }
   }
   return (
-    console.log(data),
+
     <div className="instagram-home min-vh-100 d-flex flex-column align-items-center justify-content-start"
     style={{ width: '100vw', maxWidth: '100vw', overflowX: 'hidden', margin: 0, padding: 0 }}>
       
@@ -204,8 +204,9 @@ function Home() {
 
       <div className="mt-3 container-fluid d-flex flex-column align-items-center justify-content-center p-0 m-0"
         style={{ minHeight: '80vh', width: '100vw', maxWidth: '100vw', overflowX: 'hidden', margin: 0, padding: 0, paddingBottom: '90px' }}>
-        <div className="mt-3 d-flex flex-column gap-4 align-items-center w-100" style={{ maxWidth: 420 }}>
-          {data.posts? data.posts.map(post => {
+        <div className="mt-3 d-flex flex-column gap-4 align-items-center w-100" style={{ maxWidth: 420, paddingBottom:'7rem'}}>
+          {console.log(data.posts)}
+          {data.posts.length? data.posts.map(post => {
             const postId = post._id || post.id;
             return (
               <div
@@ -220,7 +221,7 @@ function Home() {
                       <div className="card-header d-flex align-items-center bg-white border-0" style={{ height: '50px' }}>
 
                         <img
-                          src='https://randomuser.me/api/portraits/men/32.jpg'
+                          src={post.user[0].avatar ? `${API}${post.user[0].avatar}` : 'https://randomuser.me/api/portraits/men/32.jpg'}
                           alt="avatar"
                           className="rounded-circle me-2"
                           width="40"
@@ -263,29 +264,28 @@ function Home() {
                       <div className="card-header d-flex align-items-center bg-white border-0">
 
                         <img
-                          src='https://randomuser.me/api/portraits/men/32.jpg'
+                          src={post.user[0].avatar ? `${API}${post.user[0].avatar}` : 'https://randomuser.me/api/portraits/men/32.jpg'} 
                           alt="avatar"
                           style={{ objectFit: 'cover' }}
                           className="rounded-circle me-2"
                           width="40"
                           height="40"
                         />
-                        {/* <Link
-                          to={`/UserProfile/${post.user[0].username}`}
+                        <Link
+                          to={`/Userprofile/${post.user[0].username}`}
                           className="fw-semibold text-decoration-none"
-                          style={{ fontFamily: "Dancing Script", color: 'black' }}
+                          style={{ fontFamily: "Dancing Script", color: 'black', marginLeft: '0.5rem', fontSize: '1.25rem' }}
                         >
                           {post.user[0].username}
-                        </Link> */}
-                        {post.type}
+                        </Link>
                       </div>
                       {/* {console.log(post)} */}
                       <video
                         className="w-100 rounded-3"
                         loop
-                        onPlay={() => handlePlay(postId)}
-                        onPause={() => handlePauseOrEnd(postId)}
-                        onEnded={() => handlePauseOrEnd(postId)}
+                        // onPlay={() => handlePlay(postId)}
+                        // onPause={() => handlePauseOrEnd(postId)}
+                        // onEnded={() => handlePauseOrEnd(postId)}
                         autoPlay
                         playsInline
                         muted={activeAudio !== postId}
@@ -343,9 +343,9 @@ function Home() {
                 )}
               </div>
             );
-          }) : <h1>No Posts Available</h1>}
+          }) : <h3 style={{ color: 'black', textAlign: 'center' }}>No Posts Available</h3>}
+          <h6 style={{ color: 'gray', textAlign: 'center' }}>You have reached the end of the page</h6>
         </div>
-
       </div>
       <BottomMenu />
     </div>

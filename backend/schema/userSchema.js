@@ -18,7 +18,7 @@ const userSchema = new Schema({
     },
     avatar: {
         type: String,
-        default: 'https://randomuser.me/api/portraits/men/32.jpg'
+        default: "",
     },
 
     createdAt: {

@@ -105,7 +105,7 @@ router.post('/login', (req, res, next) => {
     req.logIn(user, err => {
       if (err) return next(err);
       res.json({ success: true, message: 'Login successful', redirectUrl: '/home', user });
-      console.log('login')
+
     });
   })(req, res, next);
 });

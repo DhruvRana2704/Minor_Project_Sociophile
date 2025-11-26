@@ -8,6 +8,7 @@ function Login() {
     const formData = new FormData(e.target);
 const API = import.meta.env.VITE_API_URL;
 
+
     const data = Object.fromEntries(formData);
     const response=await fetch(`${API}/users/login`, {
       method: 'POST',
@@ -28,7 +29,9 @@ const API = import.meta.env.VITE_API_URL;
     // navigate('/home');
   };
   return (
+    
     <div className="instagram-home gradient-bg min-vh-100 d-flex flex-column align-items-center justify-content-center">
+    
       <nav className="navbar navbar-expand-lg navbar-dark bg-transparent w-100 mb-5">
         <div className="container-fluid justify-content-center">
           {/* <span className="navbar-brand mb-0 h1 display-4 fw-bold text-white">Urban Wave</span> */}

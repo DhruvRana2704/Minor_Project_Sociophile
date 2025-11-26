@@ -61,12 +61,18 @@ app.use(session({
     mongoUrl: process.env.mongourl,
     collectionName: "sessions"
   }),
-  cookie: {
-  secure: true,          // REQUIRED on Render (HTTPS)
-  httpOnly: true,
-  sameSite: "none",      // REQUIRED for cross-site cookies
-  maxAge: 1000 * 60 * 60 * 24
-}
+  cookie: (function(){
+    const isProd = process.env.NODE_ENV === 'production';
+    return {
+      // In production (Render) we require Secure + SameSite=None for cross-site cookies.
+      // During local development we disable `secure` and use a more permissive SameSite so
+      // the session cookie can be set over plain HTTP.
+      secure: isProd,
+      httpOnly: true,
+      sameSite: isProd ? 'none' : 'lax',
+      maxAge: 1000 * 60 * 60 * 24
+    };
+  })()
 
 }));
 
