@@ -234,7 +234,7 @@ function Home() {
       <div className="mt-3 container-fluid d-flex flex-column align-items-center justify-content-center p-0 m-0"
         style={{ minHeight: '80vh', width: '100vw', maxWidth: '100vw', overflowX: 'hidden', margin: 0, padding: 0, paddingBottom: '90px' }}>
         <div className="mt-3 d-flex flex-column gap-4 align-items-center w-100" style={{ maxWidth: 420, paddingBottom: '7rem' }}>
-          {console.log(data.posts)}
+          
           {data.posts.length ? data.posts.map(post => {
             const postId = post._id || post.id;
             return (

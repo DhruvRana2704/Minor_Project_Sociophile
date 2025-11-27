@@ -15,7 +15,7 @@ const handleSubmit = async (e) => {
   if(!file) return alert('Please select a file to upload.');
   
   else if(type==='post'){
- console.log('post creating')
+ 
     const formData = new FormData();
   formData.append('image', file);       // match upload.single('image')
   formData.append('type', type);
@@ -31,7 +31,7 @@ const handleSubmit = async (e) => {
       credentials:"include"
     });
     const data = await res.json();
-    console.log(data);
+    
   } catch (err) {
     console.error(err);
   } finally {
@@ -41,7 +41,6 @@ const handleSubmit = async (e) => {
   }
 
   else if(type==='reel'){
-    console.log('Uploading reel...');
   const formData = new FormData();
   formData.append('video', file);       // match upload.single('image')
   formData.append('type', type);
@@ -57,7 +56,7 @@ const handleSubmit = async (e) => {
       credentials:"include"
     });
     const data = await res.json();
-    console.log(data);
+    
   } catch (err) {
     console.error(err);
   } finally {

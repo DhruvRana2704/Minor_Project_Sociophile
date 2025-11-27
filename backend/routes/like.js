@@ -15,7 +15,7 @@ function isLoggedIn(req, res, next) {
       message: 'Please login to access this resource' 
     });
   } catch (error) {
-    console.error('Auth middleware error:', error);
+    
     return res.status(500).json({ 
       success: false, 
       message: 'Internal server error' 
@@ -40,7 +40,7 @@ router.post('/like', isLoggedIn, async (req, res) => {
         await newLike.save();
         res.json({ success: true, message: 'Post liked successfully' });
     } catch (err) {
-        console.error('Like error:', err);
+        
         res.status(500).json({ success: false, message: 'Error liking post' });
     }
 });
@@ -62,7 +62,7 @@ router.delete('/dislike', isLoggedIn, async (req, res) => {
         await Like.deleteOne({ userId, postId });
         res.json({ success: true, message: 'Post disliked successfully' });
     } catch (err) {
-        console.error('Like error:', err);
+        
         res.status(500).json({ success: false, message: 'Error disliking post' });
     }
 });
@@ -98,7 +98,7 @@ router.post('/toggle', isLoggedIn, async (req, res) => {
     const likesCount = await Like.countDocuments({ postId });
     return res.json({ success: true, liked: true, likesCount });
   } catch (err) {
-    console.error('Toggle like error:', err);
+    
     res.status(500).json({ success: false, message: 'Error toggling like' });
   }
 });
