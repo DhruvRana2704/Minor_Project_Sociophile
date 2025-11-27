@@ -75,7 +75,7 @@ function Signup() {
         </div>
       </nav>
       <div className="card shadow-lg p-4 rounded-4 instagram-card text-center" style={{maxWidth: 400, background: 'rgba(255,255,255,0.95)'}}>
-        <h2 className="fw-bold mb-4" style={{fontSize:'2em', color: '#e1306c'}}>Sign Up for Urban Wave</h2>
+        <h2 className="fw-bold mb-4" style={{fontSize:'2em', color: '#e1306c'}}>Sign Up for Sociophile</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-3 text-center">
             <label className="form-label fw-semibold">Profile Photo (optional)</label>
@@ -113,7 +113,7 @@ function Signup() {
           <a href="/" className="fw-bold" style={{color: '#e1306c', textDecoration: 'underline'}}>Log in</a>
         </div>
       </div>
-      <footer className="mt-5 text-white-50">&copy; 2025 Urban Wave. Inspired by Instagram.</footer>
+      <footer className="mt-5 text-white-50">&copy; 2025 Sociophile. Inspired by Instagram.</footer>
     </div>
   );
 }

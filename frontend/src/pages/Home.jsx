@@ -16,44 +16,44 @@ function Home() {
   const [activeAudio, setActiveAudio] = useState(null); // Only one video with audio
   const [startTime, setStartTime] = useState(null);
   const [watchTime, setWatchTime] = useState(0);
+  const likeupdate = document.querySelector('.likeupdate')
+  // const handlePlay = (postId) => {
+  //   watchStartTimes[postId] = Date.now(); // record start time
+  // };
 
-// const handlePlay = (postId) => {
-//   watchStartTimes[postId] = Date.now(); // record start time
-// };
+  // const handlePauseOrEnd = async (postId) => {
+  //   const startTime = watchStartTimes[postId];
+  //   if (!startTime) return; // ignore if play wasn’t recorded
 
-// const handlePauseOrEnd = async (postId) => {
-//   const startTime = watchStartTimes[postId];
-//   if (!startTime) return; // ignore if play wasn’t recorded
+  //   const watchedSeconds = (Date.now() - startTime) / 1000;
+  //   delete watchStartTimes[postId]; // reset for next time
 
-//   const watchedSeconds = (Date.now() - startTime) / 1000;
-//   delete watchStartTimes[postId]; // reset for next time
+  //   try {
+  //     await fetch("http://localhost:5000/interactions/watch", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       credentials: "include",
+  //       body: JSON.stringify({ postId, watchedSeconds }),
+  //     });
+  //     console.log(`Watch time (${watchedSeconds}s) sent for post ${postId}`);
+  //   } catch (err) {
+  //     console.error("Failed to send watch time:", err);
+  //   }
+  // };
 
-//   try {
-//     await fetch("http://localhost:5000/interactions/watch", {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       credentials: "include",
-//       body: JSON.stringify({ postId, watchedSeconds }),
-//     });
-//     console.log(`Watch time (${watchedSeconds}s) sent for post ${postId}`);
-//   } catch (err) {
-//     console.error("Failed to send watch time:", err);
-//   }
-// };
-
-//   const onWatchUpdate = async (postId, watchedSeconds) => {
-//   try {
-//     console.log("Updating watch time:", { postId, watchedSeconds });
-//     await fetch("http://localhost:5000/interactions/watch", {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify({ postId, watchedSeconds }),
-//       credentials: 'include'
-//     });
-//   } catch (err) {
-//     console.error(err);
-//   }
-// };
+  //   const onWatchUpdate = async (postId, watchedSeconds) => {
+  //   try {
+  //     console.log("Updating watch time:", { postId, watchedSeconds });
+  //     await fetch("http://localhost:5000/interactions/watch", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ postId, watchedSeconds }),
+  //       credentials: 'include'
+  //     });
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -176,28 +176,56 @@ function Home() {
       }
     });
   };
-  async function handleLike(postid) {
-    const response = await fetchWithLoader(`${API}/likes/like`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      },
-      body: JSON.stringify({ postId: postid }),
-      credentials: 'include'
+  
+  
+  async function handleLike(postId) {
+  
+    // Optimistic UI update: increment like count locally first
+    setData(prev => {
+      const posts = prev.posts.map(p => p._id === postId ? { ...p, likesCount: (p.likesCount || 0) + 1 } : p);
+      return { ...prev, posts };
     });
-    const result = await response.json();
-    if (result.success) {
-      console.log('Post liked successfully');
-    } else {
-      console.error('Error liking post:', result.message);
+
+    try {
+      const response = await fetchWithLoader(`${API}/likes/toggle`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ postId: postId }),
+        credentials: 'include'
+      });
+
+      const result = await response.json();
+      if (result && result.success) {
+        // reconcile authoritative likesCount from server
+        setData(prev => {
+          const posts = prev.posts.map(p => p._id === postId ? { ...p, likesCount: result.likesCount } : p);
+          return { ...prev, posts };
+        });
+      } else {
+        // revert optimistic change on failure
+        setData(prev => {
+          const posts = prev.posts.map(p => p._id === postId ? { ...p, likesCount: Math.max(0, (p.likesCount || 1) - 1) } : p);
+          return { ...prev, posts };
+        });
+        console.error('Like toggle failed', result);
+      }
+    } catch (err) {
+      // revert optimistic change on error
+      setData(prev => {
+        const posts = prev.posts.map(p => p._id === postId ? { ...p, likesCount: Math.max(0, (p.likesCount || 1) - 1) } : p);
+        return { ...prev, posts };
+      });
+      console.error('Network error toggling like:', err);
     }
-  }
+}
+
   return (
 
     <div className="instagram-home min-vh-100 d-flex flex-column align-items-center justify-content-start"
-    style={{ width: '100vw', maxWidth: '100vw', overflowX: 'hidden', margin: 0, padding: 0 }}>
-      
+      style={{ width: '100vw', maxWidth: '100vw', overflowX: 'hidden', margin: 0, padding: 0 }}>
+
       {/* Top Title Only */}
       <div className="w-100 d-flex justify-content-center align-items-center p-3" >
         <h1 className="font m-0" style={{ fontSize: '2rem', color: '#e1306c', letterSpacing: '1px' }}>Sociophile</h1>
@@ -205,9 +233,9 @@ function Home() {
 
       <div className="mt-3 container-fluid d-flex flex-column align-items-center justify-content-center p-0 m-0"
         style={{ minHeight: '80vh', width: '100vw', maxWidth: '100vw', overflowX: 'hidden', margin: 0, padding: 0, paddingBottom: '90px' }}>
-        <div className="mt-3 d-flex flex-column gap-4 align-items-center w-100" style={{ maxWidth: 420, paddingBottom:'7rem'}}>
+        <div className="mt-3 d-flex flex-column gap-4 align-items-center w-100" style={{ maxWidth: 420, paddingBottom: '7rem' }}>
           {console.log(data.posts)}
-          {data.posts.length? data.posts.map(post => {
+          {data.posts.length ? data.posts.map(post => {
             const postId = post._id || post.id;
             return (
               <div
@@ -236,7 +264,7 @@ function Home() {
                         >
                           {post.user[0].username}
                         </Link>
-                        {post.user[0].username==='dhruv' && <div style={{ fontSize:'0.75rem', marginLeft: 'auto', marginRight: '1rem',  fontWeight: '700', backgroundColor:'maroon', padding:'0.2rem', borderRadius:'10px', color:'white' }}>Admin</div>}
+                        {post.user[0].username === 'dhruv' && <div style={{ fontSize: '0.75rem', marginLeft: 'auto', marginRight: '1rem', fontWeight: '700', backgroundColor: 'maroon', padding: '0.2rem', borderRadius: '10px', color: 'white' }}>Admin</div>}
                       </div>
                       <img
                         src={`${post.url}`}
@@ -250,7 +278,7 @@ function Home() {
                         <p className="card-text mb-2" style={{ color: 'blue', fontSize: '0.85rem', marginTop: '-0.5rem' }}>{post.hashtags}</p>
                         <div className="d-flex align-items-center gap-3">
                           <span className="fw-bold" onClick={() => handleLike(post._id)} style={{ color: '#e1306c', fontSize: '1.4rem', marginTop: '-0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
-                            &hearts; <span style={{ fontSize: '1rem' }}>{post.likesCount || 0}</span>
+                            &hearts; <span style={{ fontSize: '1rem' }} className="likeupdate">{post.likesCount || 0}</span>
                           </span>
                           <span className="text-secondary" style={{ color: '#e1306c', fontSize: '1rem', marginTop: '-0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
                             💬 <span style={{ fontSize: '1rem' }}>{post.comments?.length || 0}</span>
@@ -266,7 +294,7 @@ function Home() {
                       <div className="card-header d-flex align-items-center bg-white border-0">
 
                         <img
-                          src={post.user[0].avatar ? `${post.user[0].avatar}` : 'https://randomuser.me/api/portraits/men/32.jpg'} 
+                          src={post.user[0].avatar ? `${post.user[0].avatar}` : 'https://randomuser.me/api/portraits/men/32.jpg'}
                           alt="avatar"
                           style={{ objectFit: 'cover' }}
                           className="rounded-circle me-2"
@@ -279,7 +307,9 @@ function Home() {
                           style={{ fontFamily: "Dancing Script", color: 'black', marginLeft: '0.5rem', fontSize: '1.25rem' }}
                         >
                           {post.user[0].username}
+
                         </Link>
+                        {post.user[0].username === 'dhruv' && <div style={{ fontSize: '0.75rem', marginLeft: 'auto', marginRight: '1rem', fontWeight: '700', backgroundColor: 'maroon', padding: '0.2rem', borderRadius: '10px', color: 'white' }}>Admin</div>}
                       </div>
                       {/* {console.log(post)} */}
                       <video
@@ -321,8 +351,9 @@ function Home() {
                         <p className="card-text " style={{ fontSize: '0.9rem', marginTop: '-0.5rem', width: '90%' }}>{post.caption}</p>
                         <p className="card-text " style={{ color: 'blue', fontSize: '0.85rem', marginTop: '-1rem' }}>{post.hashtags}</p>
                         <div className="d-flex align-items-center gap-3">
-                          <span className="fw-bold" onClick={() => handleLike(post._id)} style={{ color: '#e1306c', fontSize: '1.4rem', marginTop: '-0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
-                            &hearts; <span style={{ fontSize: '1rem' }}>{post.likesCount || 0}</span>
+                          <span className="fw-bold"  onClick={() =>handleLike(post._id)} style={{ color: '#e1306c', fontSize: '1.4rem', marginTop: '-0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
+                            &hearts; <span  style={{ fontSize: '1rem' }}>{post.likesCount || 0}</span>
+
                           </span>
                           <span className="text-secondary" style={{ color: '#e1306c', fontSize: '1rem', marginTop: '-0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
                             💬 <span style={{ fontSize: '1rem' }}>{post.comments?.length || 0}</span>

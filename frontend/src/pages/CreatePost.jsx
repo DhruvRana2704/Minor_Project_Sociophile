@@ -12,7 +12,11 @@ function CreatePost() {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-  const formData = new FormData();
+  if(!file) return alert('Please select a file to upload.');
+  
+  else if(type==='post'){
+ console.log('post creating')
+    const formData = new FormData();
   formData.append('image', file);       // match upload.single('image')
   formData.append('type', type);
   formData.append('caption', caption);
@@ -33,6 +37,33 @@ const handleSubmit = async (e) => {
   } finally {
     setLoading(false);
     navigate('/');
+  }
+  }
+
+  else if(type==='reel'){
+    console.log('Uploading reel...');
+  const formData = new FormData();
+  formData.append('video', file);       // match upload.single('image')
+  formData.append('type', type);
+  formData.append('caption', caption);
+  formData.append('hashtags', hashtags);
+
+
+  setLoading(true);
+  try {
+    const res = await fetch(`${API}/posts/create_reel`, {
+      method: 'POST',
+      body: formData,
+      credentials:"include"
+    });
+    const data = await res.json();
+    console.log(data);
+  } catch (err) {
+    console.error(err);
+  } finally {
+    setLoading(false);
+    navigate('/');
+  }
   }
 };
 

@@ -154,7 +154,7 @@ function Profile() {
                   <ul className="list-unstyled mb-0">
                     {(showList === 'followers' ? followers : following).map((item, idx) => (
                       <li style={{display:'flex',alignItems:'center'}} key={idx} className="py-2 border-bottom">
-                        <img src={showList === 'followers' ? `${item.followerId.avatar}` : `${item.followingId.avatar}`} width='40px' height='40px' alt="" style={{objectFit:'cover', borderRadius: '50%', marginRight:'10px'}}/>
+                        <img src={showList === 'followers' ? item.followerId.avatar ? `${item.followerId.avatar}` : "https://randomuser.me/api/portraits/men/32.jpg" : item.followingId.avatar ? `${item.followingId.avatar}` : "https://randomuser.me/api/portraits/men/32.jpg"} width='40px' height='40px' alt="" style={{objectFit:'cover', borderRadius: '50%', marginRight:'10px'}}/>
                         <Link to={`/UserProfile/${showList === 'followers' ? item.followerId.username : item.followingId.username }`}>
                         {showList === 'followers' ? item.followerId.username : item.followingId.username}
                         </Link>

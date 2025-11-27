@@ -25,7 +25,7 @@ const UserProfile = () => {
     if (!user) {
       const timer = setTimeout(() => {
         setShowNotFound(true);
-      }, 5000);
+      }, 10000);
 
       return () => clearTimeout(timer);
     }
@@ -34,10 +34,7 @@ const UserProfile = () => {
   if (showNotFound) {
     return (
       <div className="min-vh-100 d-flex flex-column align-items-center justify-content-center">
-        <h3>User not found</h3>
-        <Link to="/home" className="btn btn-primary mt-3">
-          Back to Home
-        </Link>
+        <h3>Time Out</h3>
       </div>
     );
   }
@@ -51,9 +48,6 @@ const UserProfile = () => {
     );
   }
 
-  
-
-
 
     return (
     <div className="instagram-home min-vh-100 d-flex flex-column align-items-center justify-content-center" 
@@ -62,7 +56,7 @@ const UserProfile = () => {
         {/* Profile Info Card */}
         <div className="card p-4 mb-4 text-center instagram-card" style={{maxWidth:400, width:'100%'}}>
           <h2 className="font fw-bold mb-1">{user.fullName}</h2>
-          <img src={`${user.avatar}`} style={{objectFit:'cover'}} alt={user.fullName} className="rounded-circle mb-3 mx-auto" width="100" height="100" />
+          <img src={user.avatar?`${user.avatar}`:"https://randomuser.me/api/portraits/men/32.jpg"} style={{objectFit:'cover'}} alt={user.fullName} className="rounded-circle mb-3 mx-auto" width="100" height="100" />
           <div className="text-secondary mb-2">@{username}</div>
            <p className="mb-2" style={{whiteSpace:'break-spaces'}}>{user.bio ? user.bio : "Bio for " + user.username.toUpperCase()}</p>
         </div>

@@ -1,7 +1,7 @@
 const express = require('express');
 const expressRouter = express.Router();
 const postSchema = require('../schema/postSchema');
-const { uploadImage } = require('./multer');
+const { uploadImage,uploadVideo } = require('./multer');
 
 
 const userSchema = require('../schema/userSchema');
@@ -18,7 +18,29 @@ const isLoggedIn = (req, res, next) => {
 expressRouter.post('/create_post', uploadImage.single('image'), async (req, res) => {
   try {
     const user = await userSchema.findOne({ username: req.session.passport.user });
+    
+    const post = await postSchema.create({
+      userId: user._id,
+      type: req.body.type,
+      url: req.file ? req.file.path : null, // Cloudinary URL
+      caption: req.body.caption,
+      hashtags: req.body.hashtags
+        ? req.body.hashtags.split(',').map(tag => tag.trim())
+        : []
+    });
 
+    
+    res.json({ post });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+
+expressRouter.post('/create_reel', uploadVideo.single('video'), async (req, res) => {
+  try {
+    const user = await userSchema.findOne({ username: req.session.passport.user });
+console.log(user)
     const post = await postSchema.create({
       userId: user._id,
       type: req.body.type,

@@ -18,4 +18,7 @@ const likeSchema=new Schema({
     }
 });
 
+// Ensure a user can like a post only once
+likeSchema.index({ userId: 1, postId: 1 }, { unique: true });
+
 module.exports=mongoose.model('Like',likeSchema);
